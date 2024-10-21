@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v3
 
       # Step 2: Install necessary packages and binaries (including wkhtmltopdf)
-      - name: Install wkhtmltopdf and jot
+      - name: Install wkhtmltopdf
         run: |
           sudo apt-get update -qq
           sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq wkhtmltopdf
@@ -27,10 +27,24 @@ jobs:
           fi
 
       # Step 4: Execute the loop from the file, generating PDFs
-      - name: Execute wkhtmltopdf commands with delay
+      # Step 4: Execute wkhtmltopdf commands with delay and error reporting
+      - name: Execute wkhtmltopdf commands with delay and error handling
         run: |
           while read line; do
-            bash -c "($line 2>&1 | tee -a ./report)"
+            # Enhanced wkhtmltopdf command with error handling
+            if ! bash -c "($line --no-stop-slow-scripts --disable-smart-shrinking 2>&1 | tee -a ./report)"; then
+              echo "Error occurred during: $line" >> ./report
+            fi
             sleep $(shuf -i 3-8 -n 1)
           done < ./associate-cloud-engineer.txt
 
+      # Step 6: Commit and push the report and any generated files
+      - name: Commit and push changes
+        run: |
+          git add report *.pdf
+          if git diff-index --quiet HEAD; then
+            echo "No changes to commit."
+          else
+            git commit -m "Add generated PDFs and report from GitHub Action"
+            git push origin main
+          fi
