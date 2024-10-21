@@ -33,7 +33,7 @@ jobs:
         run: |
           while read line; do
             # Enhanced wkhtmltopdf command with error handling
-            if ! bash -c "($line --no-stop-slow-scripts 2>&1 | tee -a ./report)"; then
+            if ! bash -c "(wkhtmltopdf --no-stop-slow-scripts --javascript-delay 1000 $line 2>&1 | tee -a ./report)"; then
               echo "Error occurred during: $line" >> ./report
             fi
             sleep $(shuf -i 3-8 -n 1)
