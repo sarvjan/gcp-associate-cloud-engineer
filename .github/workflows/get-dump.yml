@@ -15,9 +15,9 @@ jobs:
       # Step 2: Install necessary packages and binaries (including wkhtmltopdf)
       - name: Install wkhtmltopdf and jot
         run: |
-          sudo apt-get update
-          sudo apt-get install -y wkhtmltopdf
-          sudo apt-get install -y jot
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq wkhtmltopdf
+          # sudo apt-get install -y -qq jot
 
       # Step 3: Ensure that the input file exists
       - name: Ensure input file exists
