@@ -17,7 +17,7 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq wkhtmltopdf
-          # sudo apt-get install -y -qq jot
+          sudo apt-get install -y -qq jot
 
       # Step 3: Ensure that the input file exists
       - name: Ensure input file exists
