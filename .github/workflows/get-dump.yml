@@ -26,6 +26,7 @@ jobs:
           if [ ! -f "./associate-cloud-engineer.txt" ]; then
             echo "Input file not found! Exiting."
             exit 1
+          fi
 
       # Step 4: Execute wkhtmltopdf commands with delay and error reporting
       - name: Execute wkhtmltopdf commands with delay and error handling
